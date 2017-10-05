@@ -2,6 +2,7 @@
   "name": "github-users-app",
   "version": "0.1.0",
   "private": true,
+  "homepage" : "https://omeldm.github.io/github-users-app",
   "dependencies": {
     "gh-pages": "^1.0.0",
     "react": "^16.0.0",
