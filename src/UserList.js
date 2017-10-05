@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {handleJson} from './utils';
 
 export default class UserList extends React.Component {
     state = {
@@ -8,10 +9,13 @@ export default class UserList extends React.Component {
 
     componentDidMount() {
         fetch('https://api.github.com/users')
-            .then((users) => users.json())
+            .then(handleJson)
             .then((users) => {
                 this.setState({ users });
-            });
+            })
+            .catch(error => {
+                alert(error);
+            });;
     }
 
     render() {
