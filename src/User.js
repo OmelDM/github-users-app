@@ -1,38 +1,43 @@
 import React from 'react';
+import Avatar from './Avatar';
+import {handleJson} from './utils';
 
 export default class User extends React.Component {
 
     state = {
-        user: null
+        user: {}
     };
 
-    fetchUser() {
-        const {match: {params: {user}}} = this.props;
-
-        fetch(`https://api.github.com/users/${user}`)
-            .then(response => response.json())
+    fetchUser(userLogin) {
+        fetch(`https://api.github.com/users/${userLogin}`)
+            .then(handleJson)
             .then(user => {
                 this.setState({user});
+            })
+            .catch(error => {
+                alert(error);
             });
     }
 
     componentDidMount() {
-        this.fetchUser();
+        const {match: {params: {user: userLogin}}} = this.props;
+        this.fetchUser(userLogin);
     }
 
-    componentWillReceiveProps() {
-        this.fetchUser();
+    componentWillReceiveProps({match: {params: {user: userLogin}}}) {
+        this.setState({
+            user: {}
+        });
+        this.fetchUser(userLogin);
     }
 
     render() {
         const {match: {params: {user : userLogin}}} = this.props;
-        const styles = {
-            maxWidth: '230px'
-        };
-        
+        const {avatar_url: src} = this.state.user;
+
         return (
             <div className = 'card'>
-                <img className = 'card-img' src = 'http://via.placeholder.com/230x230' style = {styles} alt = '' />
+                <Avatar src = {src} />
                 <div className = 'card-body'>
                     <h1 className = 'card-title'>{userLogin}</h1>
                 </div>
